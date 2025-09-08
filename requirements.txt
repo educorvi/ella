@@ -1,9 +1,6 @@
 fastapi
 uvicorn[standard]
-sqlalchemy
-psycopg2-binary
 reportlab
 apply
 requests
 pymongo
-aiofiles
