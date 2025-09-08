@@ -1,9 +1,17 @@
-USER = 'ploneuser'
-PW = 'plonesecret'
-
-APPS = {
-        'appname':'https://myserver.com/path/path/appname',
-        }
-
+USER = 'backenduser'
+PW = 'backendpassword'
 MONGOUSR = 'mongouser'
-MONGOPW = 'mongosecret'
+MONGOPW = 'mongopassword'
+BASEURL = 'https://baseurl.for.ellaservices'
+APPS = {
+        'appid':{
+            "name": "appname",
+            "backend": "https://host.domain/path/to/ellaapp",
+            "title": "title of ella app",
+            "description": "short description of ella app",
+            "icon": "https://host.domain/path/to/icon.jpg",
+            "app":{
+                "url": f"{BASEURL}/appid",
+                "statusCode":"200",
+                "message":"success"}},
+}
