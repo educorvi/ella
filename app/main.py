@@ -3,7 +3,7 @@
 # # lars.walther@educorvi.de
 
 from .models import Welcome, ServiceDescription, ServiceButton, FormDescription, FormData
-from .models import EllaContact, ContactResponse, ResponseData
+from .models import EllaContact, ContactResponse, ResponseData, ServiceList
 from .services import EllaServices
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
@@ -20,6 +20,9 @@ def read_root():
     """'Ella, elle l'a' (France Gall) Die OpenApi für Deine ella_app ist online."""
     return(u"'Ella, elle l'a' (France Gall) Die OpenApi für Deine ella_app ist online.")
 
+@app.get("/apps", response_model=ServiceList)
+def get_ella_services():
+    return services.get_ella_apps()
 
 @app.get("/{ella_id}", response_model=Welcome)
 def read_ella_root(ella_id:str):

@@ -7,13 +7,22 @@ import smtplib
 import requests
 from fastapi import HTTPException
 from .examples import example_apps, example_services
-from .models import ResponseData
+from .models import ResponseData, ServiceList
 from .converter import ellaview2welcome
 from .private import USER, PW, APPS
 from printfiverules.pdfprinter import PdfPrinter
 from pwaprint.createpdf import create_pdf
 from pwaprint.dataparser import parse_data_from_dicts
 from .persistance import writeDocToDatabase, readDocFromDatabase
+
+def create_default(ella_id):
+    ret = {
+        "name": ella_id,
+        "title": f"Ella-APP: {ella_id}",
+        "description": "Ups... etwas ist schiefgelaufen, die Daten der Ella-App konnten nicht geladen werden. Bitte versuchen Sie es später noch einmal.",
+        "icon": "",
+        "url": APPS.get(ella_id)
+      },
 
 class EllaServices(object):
 
@@ -22,6 +31,14 @@ class EllaServices(object):
         session.auth = (USER, PW)
         session.headers.update({'Accept': 'application/json'})
         self.session = session
+
+
+    def get_ella_apps(self):
+        summary_list = []
+        for ella_id in APPS:
+            summary_list.append(APPS.get(ella_id))
+        return ServiceList(version = '0.0.1', apps = summary_list)    
+
 
     def get_welcome_page(self, ella_id:str):
         if ella_id == 'ella_example_simple':

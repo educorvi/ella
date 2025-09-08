@@ -213,3 +213,10 @@ class ContactResponse(BaseModel):
     """
     success : bool
     message : str
+
+class ServiceList(BaseModel):
+    """
+    Gibt eine Liste mit den verfügbaren Ella-Apps zurück.
+    """
+    version : str
+    apps : List[dict]
