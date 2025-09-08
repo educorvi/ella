@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# # Copyright (c) 2016-2020 educorvi GmbH & Co. KG
+# # Copyright (c) 2016-2025 educorvi GmbH & Co. KG
 # # lars.walther@educorvi.de
 
 from .models import Welcome, ServiceDescription, ServiceButton, FormDescription, FormData

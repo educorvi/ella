@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# # Copyright (c) 2016-2020 educorvi GmbH & Co. KG
+# # Copyright (c) 2016-2025 educorvi GmbH & Co. KG
 # # lars.walther@educorvi.de
 import base64
 import sys
@@ -10,19 +10,9 @@ from .examples import example_apps, example_services
 from .models import ResponseData, ServiceList
 from .converter import ellaview2welcome
 from .private import USER, PW, APPS
-from printfiverules.pdfprinter import PdfPrinter
 from pwaprint.createpdf import create_pdf
 from pwaprint.dataparser import parse_data_from_dicts
 from .persistance import writeDocToDatabase, readDocFromDatabase
-
-def create_default(ella_id):
-    ret = {
-        "name": ella_id,
-        "title": f"Ella-APP: {ella_id}",
-        "description": "Ups... etwas ist schiefgelaufen, die Daten der Ella-App konnten nicht geladen werden. Bitte versuchen Sie es später noch einmal.",
-        "icon": "",
-        "url": APPS.get(ella_id)
-      },
 
 class EllaServices(object):
 
@@ -118,18 +108,6 @@ class EllaServices(object):
         return ResponseData(type = 'email',
                 content = url,
                 encoding = 'utf-8')
-
-    def get_ellaprint(self, ella_id, ella_service, doc_id):
-        ellaprinter = PdfPrinter()
-        pdfprint = getattr(ellaprinter, ella_service)
-        document = readDocFromDatabase(doc_id)
-        printdata = dict()
-        printdata['data'] = document
-        printdata['docid'] = doc_id
-        pdfstring = pdfprint(printdata)
-        filepath = '/tmp/%s.pdf' % doc_id
-        filename = '%s.pdf' % ella_service
-        return {'filedata':filepath, 'filename':filename}
 
     def get_ellalink(self, ella_id, ella_service, data):
         if ella_id == 'ella_example_simple':
