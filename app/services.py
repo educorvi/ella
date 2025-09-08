@@ -45,7 +45,7 @@ class EllaServices(object):
             welcome = example_apps.get(ella_id)
             return welcome
         elif ella_id in APPS:
-            url = APPS.get(ella_id) + '/ella-view'
+            url = APPS.get[ella_id][backend] + '/ella-view'
             rawwelcome = self.session.get(url)
             rawwelcome = rawwelcome.json()
             welcome = ellaview2welcome(rawwelcome)
