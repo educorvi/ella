@@ -1,0 +1,30 @@
+site_name: ella
+
+nav:
+    - Home: index.md
+
+theme: material     
+
+plugins:
+    - search
+    - with-pdf:
+        author: Lars Walther
+        copyright: (c) Lars Walther
+        cover_subtitle: Dokumentation des Projekts 
+        toc_title: Inhaltsverzeichnis
+
+extra:
+    cover_description: Dokumentation ELLA
+    cover_additional: Fire and Forget PWA-Services
+    cover_company: educorvi GmbH & Co. KG
+    cover_street: Karolinenstraße 17
+    cover_zip_location: 90763 Fürth
+    cover_url: https://www.educorvi.de
+    cover_www: www.educorvi.de
+    cover_name: Lars Walther
+    cover_copyright: CC BY 4.0
+    cover_date: 09.09.2025  
+
+markdown_extensions:
+  - abbr
+  - pymdownx.snippets

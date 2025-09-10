@@ -7,24 +7,33 @@ from .models import EllaContact, ContactResponse, ResponseData, ServiceList
 from .services import EllaServices
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+site_dir = os.path.join(current_dir, '..', 'elladocs', 'site')
+static_dir = os.path.join(current_dir, 'static')
 
 app = FastAPI(
     title="ELLA",
     description="OpenApi für 'Fire and Forget' Applikationen",
     version="0.9",
 )
+
+app.mount('/apidocs', StaticFiles(directory=site_dir, html=True), name="apidocs")
+app.mount("/static", StaticFiles(directory=static_dir, html=True), name="static")
+
 services = EllaServices()
 
 @app.get("/")
-def read_root():
-    """'Ella, elle l'a' (France Gall) Die OpenApi für Deine ella_app ist online."""
-    return(u"'Ella, elle l'a' (France Gall) Die OpenApi für Deine ella_app ist online.")
+async def read_index():
+    return FileResponse(os.path.join(static_dir, "index.html"))
 
-@app.get("/apps", response_model=ServiceList)
+@app.get("/api/v1/apps", response_model=ServiceList)
 def get_ella_services():
     return services.get_ella_apps()
 
-@app.get("/{ella_id}", response_model=Welcome)
+@app.get("/api/v1/{ella_id}", response_model=Welcome)
 def read_ella_root(ella_id:str):
     """ Liefert die Welcome-Page Deiner ella_app zurück. Das folgende Beispiel kannst Du
         ausprobieren:
@@ -33,7 +42,7 @@ def read_ella_root(ella_id:str):
     return services.get_welcome_page(ella_id)
 
 
-@app.get("/{ella_id}/{ella_service}", response_model=ServiceDescription)
+@app.get("/api/v1/{ella_id}/{ella_service}", response_model=ServiceDescription)
 def read_ella_service(ella_id:str, ella_service:str):
      """ Liefert den gewünschten Service für Deine ella_app zurück. Folgende Beispiele kannst Du
          ausprobieren:
@@ -46,7 +55,7 @@ def read_ella_service(ella_id:str, ella_service:str):
      return services.get_ella_service(ella_id, ella_service)
 
 
-@app.post("/{ella_id}/{ella_service}/pdf", response_model=ResponseData)
+@app.post("/api/v1/{ella_id}/{ella_service}/pdf", response_model=ResponseData)
 def get_pdf(ella_id:str, ella_service:str, data:FormData):
     """Die ella Applikation sendet die Daten passend zu einer Servicebeschreibung. Es wird ein
        PDF-Dokument zurückgesendet.
@@ -54,14 +63,14 @@ def get_pdf(ella_id:str, ella_service:str, data:FormData):
     return services.get_ellapdf(ella_id, ella_service, data)
 
 
-@app.post("/{ella_id}/{ella_service}/mail", response_model=ResponseData)
+@app.post("/api/v1/{ella_id}/{ella_service}/mail", response_model=ResponseData)
 def get_mail(ella_id:str, ella_service:str, data:FormData):
     """Die ella Applikation sendet die Daten passend zu einer Servicebeschreibung.
     """
     return services.get_ellamail(ella_id, ella_service, data)
 
 
-@app.get("/{ella_id}/{ella_service}/docprinter/{docid}")
+@app.get("/api/v1/{ella_id}/{ella_service}/docprinter/{docid}")
 def get_print(ella_id:str, ella_service:str, docid:str):
     """Die ella Applikation sendet die Daten passend zu einer Servicebeschreibung.
     """
@@ -69,14 +78,14 @@ def get_print(ella_id:str, ella_service:str, docid:str):
     return FileResponse(printfile.get('filedata'), filename=printfile.get('filename'), media_type="application/pdf")
 
 
-@app.post("/{ella_id}/{ella_service}/link", response_model=ResponseData)
+@app.post("/api/v1/{ella_id}/{ella_service}/link", response_model=ResponseData)
 def get_link(ella_id:str, ella_service:str, data:FormData):
     """Die ella Applikation sendet die Daten passend zu einer Servicebeschreibung.
     """
     return services.get_ellalink(ella_id, ella_service, data)
 
 
-@app.post("/{ella_id}/contact/send", response_model=ContactResponse)
+@app.post("/api/v1/{ella_id}/contact/send", response_model=ContactResponse)
 def get_data(ella_id:str, data:EllaContact):
     """Die ella Applikation sendet die Daten passend zum EllaContact Formular. Die Daten werden
        angenommen und weitergeleitet.

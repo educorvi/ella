@@ -5,5 +5,9 @@ reportlab
 apply
 requests
 pymongo
+mkdocs
+mkdocs-material
+markdown_include
+mkdocs-with-pdf
 git+https://github.com/educorvi/pwaprint.git
 
